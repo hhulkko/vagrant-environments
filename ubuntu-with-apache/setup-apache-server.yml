@@ -1,0 +1,19 @@
+---
+- name: Ubuntu with Apache
+  hosts: apache-server
+  user: vagrant
+  sudo: True
+
+  tasks:
+
+  - name: Update Apt cache
+    action: apt update_cache=yes
+
+  - name: Install Packages
+    action: apt pkg=$item state=latest
+    with_items:
+      - apache2
+      - curl
+
+  - name: Start Apache
+    action: service name=apache2 state=started

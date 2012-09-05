@@ -1,0 +1,13 @@
+require 'vagrant-ansible'
+
+# Stripped down ubuntu lucid with just apache installed
+
+Vagrant::Config.run do |config|
+  config.vm.box     = "lucid64"
+  config.vm.box_url = "http://files.vagrantup.com/lucid64.box"
+
+  config.vm.provision :ansible do |ansible|
+    ansible.playbook = "setup-apache-server.yml"
+    ansible.hosts = "apache-server"
+  end
+end
