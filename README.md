@@ -8,7 +8,8 @@ Install [Ansible](http://ansible.github.com/) and [Ansible Vagrant](https://gith
     sudo make install
     vagrant gem install vagrant-ansible
 
-Clone this
+Start VM
 
-    cd vagrant-envinronments/ubuntu-with-apache
+    git clone https://github.com/hhulkko/vagrant-environments.git
+    cd vagrant-environments/ubuntu-with-apache/
     vagrant up
