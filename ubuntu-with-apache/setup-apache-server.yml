@@ -5,15 +5,36 @@
   sudo: True
 
   tasks:
-
   - name: Update Apt cache
     action: apt update_cache=yes
-
   - name: Install Packages
     action: apt pkg=$item state=latest
     with_items:
       - apache2
+      - libapache2-mod-proxy-html
       - curl
-
+      - aptitude
+      - ack-grep
+      - vim
+      - tmux
+  - name: Install Apache Modules
+    action: command /usr/sbin/a2enmod $item
+    with_items:
+      - proxy
+      - proxy_http
+    notify:
+    - restart apache
+  - name: Write Apache Proxy Config File
+    action: template src=../templates/proxy.conf dest=/etc/apache2/mods-available/proxy.conf
+    notify:
+    - restart apache
+  - name: Setup Proxy
+    action: template src=../templates/proxy-setup.conf dest=/etc/apache2/conf.d/proxy-setup.conf
+    notify:
+    - restart apache
   - name: Start Apache
     action: service name=apache2 state=started
+
+  handlers:
+    - name: restart apache
+      action: service name=apache2 state=restarted
