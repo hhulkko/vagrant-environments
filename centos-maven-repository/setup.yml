@@ -1,0 +1,33 @@
+---
+- name: Centos with Apache
+  hosts: apache-centos-server
+  user: vagrant
+  sudo: True
+
+  tasks:
+  - name: Install Packages
+    action: yum name=$item state=latest
+    with_items:
+      - httpd
+      - curl
+      - nc
+      - vim
+      - tree
+  - name: Start Httpd
+    action: service name=httpd state=started
+  - name: Disable iptables
+    action: service name=iptables state=stopped
+  - name: Create maven directory
+    action: file path=/var/www/maven2 owner=vagrant group=root mode=0755 state=directory
+  - name: Enable indexes
+    action: file path=/etc/httpd/conf.d/welcome.conf state=absent
+    notify:
+    - restart httpd
+  - name: Configure httpd
+    action: copy src=files/httpd.conf dest=/etc/httpd/conf/httpd.conf owner=root group=root mode=0644
+    notify:
+    - restart httpd
+
+  handlers:
+    - name: restart httpd
+      action: service name=httpd state=restarted

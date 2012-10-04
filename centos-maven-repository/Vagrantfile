@@ -1,0 +1,15 @@
+require 'vagrant-ansible'
+
+# Stripped down centos 6.3 with apache configured to serve as maven repo
+
+Vagrant::Config.run do |config|
+  config.vm.box     = "CentOS-6.3-x86_64-minimal"
+  config.vm.box_url = "https://dl.dropbox.com/u/7225008/Vagrant/CentOS-6.3-x86_64-minimal.box"
+  config.vm.network :hostonly, "192.168.151.5"
+  config.vm.host_name = "apache-centos-server"
+
+  config.vm.provision :ansible do |ansible|
+    ansible.playbook = "setup.yml"
+    ansible.hosts = "apache-centos-server"
+  end
+end
