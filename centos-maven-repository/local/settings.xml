@@ -1,0 +1,9 @@
+<settings>
+  <servers>
+    <server>
+      <id>centos-repository</id>
+      <username>vagrant</username>
+      <privateKey>/Users/hhulkko/.vagrant.d/insecure_private_key</privateKey>
+    </server>
+  </servers>
+</settings>
